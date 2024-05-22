@@ -129,6 +129,8 @@
 </head>
 <body>
     <?php
+
+        include 'db_connection.php';
         $semester = $_GET['semester'];
         $name = $_GET['name'];
         $register_no = $_GET['register_no'];
@@ -165,6 +167,13 @@
                 "CSCA 523 - Project Report and Viva-voce (4 Credits)"
             ]
         ];
+
+        $query = "SELECT subject_code, subject_name FROM subjects WHERE hardcore_softcore = 'S'";
+        $result = mysqli_query($connection, $query);
+        
+        $additionalSubjects = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $additionalSubjects[$row['subject_code']] = $row['subject_name'];}
     ?>
 
     <!-- Header section -->
@@ -228,19 +237,24 @@
                     <?php endforeach; ?>
                 </div>
 
-                <h2>Additional Subjects</h2>
-                <div id="additionalSubjects" class="scrolling-subjects"></div>
-                <div class="form-group">
-                    <label for="subjectDropdown">Add Subject:</label>
-                    <select class="form-control" id="subjectDropdown">
-                        <option value="" disabled selected>Select Subject</option>
-                        <?php foreach ($subjectNames as $id => $name): ?>
-                            <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <button type="button" class="btn btn-primary mt-2" onclick="addSubject(subjectDropdown.value)">Add</button>
-                </div>
-
+               <!-- Additional Subjects section -->
+<h2>Additional Subjects</h2>
+<div id="additionalSubjects" class="scrolling-subjects">
+    <!-- This is where the additional subjects will be listed -->
+</div>
+<div class="form-group">
+    <label for="subjectDropdown">Add Subject:</label>
+    <select class="form-control" id="subjectDropdown">
+        <option value="" disabled selected>Select Subject</option>
+        <?php
+            // Populate dropdown with additional subjects
+            foreach ($additionalSubjects as $id => $name) {
+                echo "<option value=\"$id\">$name</option>";
+            }
+        ?>
+    </select>
+    <button type="button" class="btn btn-primary mt-2" onclick="addSubject(subjectDropdown.value)">Add</button>
+</div>
                 <div class="form-group">
                     <label for="cgpa">SGPA</label>
                     <input type="text" class="form-control" id="cgpa" readonly>
