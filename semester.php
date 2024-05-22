@@ -176,23 +176,24 @@
             $additionalSubjects[$row['subject_code']] = $row['subject_name'];}
     ?>
 
-    <!-- Header section -->
-    <header class="text-center mt-3 mb-3">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-2">
-                    <img src="pu_logo.png" alt="Pondicherry University Logo">
-                </div>
-                <div class="col-8">
-                    <h1 class="mb-0">PONDICHERRY UNIVERSITY <br> (A Central University)</h1>
-                </div>
-                <div class="col-2 text-right">
-                    <span>Folio no:</span>
-                </div>
+   <!-- Header section -->
+<header class="text-center mt-3 mb-3">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-2">
+                <img src="pu_logo.png" alt="Pondicherry University Logo" style="width: 100px; height: 100px;">
             </div>
-            <h1 class="mt-4">SEMESTER MARKS</h1>
+            <div class="col-8">
+                <h1 class="mb-0">PONDICHERRY UNIVERSITY <br> (A Central University)</h1>
+            </div>
+            <div class="col-2 text-right">
+                <span>Folio no:</span>
+            </div>
         </div>
-    </header>
+        <h1 class="mt-4">STATEMENT OF GRADES</h1>
+    </div>
+</header>
+
 
     <!-- Form section -->
     <div class="container">
