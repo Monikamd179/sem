@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Semester Marks</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="styles.css">
     <style>
         .scrolling-subjects {
             max-height: 400px;
@@ -13,47 +12,51 @@
         }
     </style>
     <script>
+        const subjectNames = {
+            "supportiveCore1": "Supportive Core #1",
+            "domainSpecificElective1": "Domain Specific Elective #1",
+            "domainSpecificElective2": "Domain Specific Elective #2",
+            "openElective1": "Open Elective #1",
+            "supportiveCore2": "Supportive Core #2",
+            "skillEnhancement1": "Skill Enhancement Programme #1",
+            "skillEnhancement2": "Skill Enhancement Programme #2"
+        };
+
+        const subjectOptions = {
+            "supportiveCore1": ["CSCA 431 - Mathematics for Computer Science (3 Credits)", "CSCA 432 - Management Concepts and Strategies (3 Credits)"],
+            "domainSpecificElective1": [
+                "CSEL 441 - Fundamentals of Cryptography (3 Credits)", "CSEL 551 - Data Mining Techniques (3 Credits)", 
+                "CSEL 561 - Software Project Management (3 Credits)", "CSEL 571 - Introduction to Business Analytics (3 Credits)", 
+                "CSEL 581 - Principles of Distributed Computing (3 Credits)", "CSEL 591 - Introduction to A.I. and Expert Systems (3 Credits)"
+            ],
+            "domainSpecificElective2": [
+                "CSEL 442 - Database and Application Security (3 Credits)", "CSEL 552 - Big Data Analytics (3 Credits)", 
+                "CSEL 562 - Software Quality Assurance (3 Credits)", "CSEL 572 - Marketing Analytics (3 Credits)", 
+                "CSEL 582 - Introduction to Parallel Computing (3 Credits)", "CSEL 592 - Neural Networks (3 Credits)"
+            ],
+            "openElective1": [
+                "CSEL 530 - Online / Certification Courses (3 Credits)", "CSEL 531 - Simulation and Modeling Tools (SCI Lab) (3 Credits)",
+                "CSEL 532 - Mobile Application Development (3 Credits)", "CSEL 533 - Software Testing Tools (3 Credits)", 
+                "CSEL 534 - Multimedia Tools (3 Credits)", "CSEL 535 - Python Programming (3 Credits)"
+            ],
+            "supportiveCore2": ["CSCA 431 - Mathematics for Computer Science (3 Credits)", "CSCA 432 - Management Concepts and Strategies (3 Credits)"],
+            "skillEnhancement1": [
+                "CSCA 531 - Soft Skills Training (3 Credits)", "CSCA 532 - Technical Writing (3 Credits)", 
+                "CSCA 533 - Presentation Skills (3 Credits)"
+            ],
+            "skillEnhancement2": [
+                "CSCA 531 - Soft Skills Training (3 Credits)", "CSCA 532 - Technical Writing (3 Credits)", 
+                "CSCA 533 - Presentation Skills (3 Credits)"
+            ]
+        };
+
         function addSubject(subjectId) {
-            const subjectNames = {
-                "supportiveCore1": "Supportive Core #1",
-                "domainSpecificElective1": "Domain Specific Elective #1",
-                "domainSpecificElective2": "Domain Specific Elective #2",
-                "openElective1": "Open Elective #1",
-                "supportiveCore2": "Supportive Core #2",
-                "skillEnhancement1": "Skill Enhancement Programme #1",
-                "skillEnhancement2": "Skill Enhancement Programme #2"
-            };
-            const subjectOptions = {
-                "supportiveCore1": ["CSCA 431 - Mathematics for Computer Science (3 Credits)", "CSCA 432 - Management Concepts and Strategies (3 Credits)"],
-                "domainSpecificElective1": [
-                    "CSEL 441 - Fundamentals of Cryptography (3 Credits)", "CSEL 551 - Data Mining Techniques (3 Credits)", 
-                    "CSEL 561 - Software Project Management (3 Credits)", "CSEL 571 - Introduction to Business Analytics (3 Credits)", 
-                    "CSEL 581 - Principles of Distributed Computing (3 Credits)", "CSEL 591 - Introduction to A.I. and Expert Systems (3 Credits)"
-                ],
-                "domainSpecificElective2": [
-                    "CSEL 442 - Database and Application Security (3 Credits)", "CSEL 552 - Big Data Analytics (3 Credits)", 
-                    "CSEL 562 - Software Quality Assurance (3 Credits)", "CSEL 572 - Marketing Analytics (3 Credits)", 
-                    "CSEL 582 - Introduction to Parallel Computing (3 Credits)", "CSEL 592 - Neural Networks (3 Credits)"
-                ],
-                "openElective1": [
-                    "CSEL 530 - Online / Certification Courses (3 Credits)", "CSEL 531 - Simulation and Modeling Tools (SCI Lab) (3 Credits)",
-                    "CSEL 532 - Mobile Application Development (3 Credits)", "CSEL 533 - Software Testing Tools (3 Credits)", 
-                    "CSEL 534 - Multimedia Tools (3 Credits)", "CSEL 535 - Python Programming (3 Credits)"
-                ],
-                "supportiveCore2": ["CSCA 431 - Mathematics for Computer Science (3 Credits)", "CSCA 432 - Management Concepts and Strategies (3 Credits)"],
-                "skillEnhancement1": [
-                    "CSCA 531 - Soft Skills Training (3 Credits)", "CSCA 532 - Technical Writing (3 Credits)", 
-                    "CSCA 533 - Presentation Skills (3 Credits)"
-                ],
-                "skillEnhancement2": [
-                    "CSCA 531 - Soft Skills Training (3 Credits)", "CSCA 532 - Technical Writing (3 Credits)", 
-                    "CSCA 533 - Presentation Skills (3 Credits)"
-                ]
-            };
+            if (!subjectId) return;
 
             const container = document.getElementById('additionalSubjects');
             const subjectDiv = document.createElement('div');
             subjectDiv.className = 'form-group';
+            subjectDiv.id = subjectId + '-' + container.children.length;
 
             let optionsHTML = '';
             subjectOptions[subjectId].forEach(option => {
@@ -61,14 +64,25 @@
             });
 
             subjectDiv.innerHTML = `
-                <label for="${subjectId}">${subjectNames[subjectId]}:</label>
-                <select class="form-control" id="${subjectId}" name="subjects[${subjectId}]">
-                    ${optionsHTML}
-                </select>
-                <input type="number" class="form-control mt-2" name="points[${subjectId}]" min="0" max="10" step="0.01" placeholder="Enter Points" required>
-                <input type="number" class="form-control mt-2" name="marks[${subjectId}]" min="0" max="100" step="1" placeholder="Enter Marks" required>
+                <div class="form-group">
+                    <label for="${subjectId}">${subjectNames[subjectId]}:</label>
+                    <select class="form-control" name="subjects[${subjectId}]">
+                        ${optionsHTML}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control mt-2" name="points[${subjectId}]" min="0" max="10" step="0.01" placeholder="Enter Points" required>
+                    <input type="number" class="form-control mt-2" name="marks[${subjectId}]" min="0" max="100" step="1" placeholder="Enter Marks" required>
+                    <input type="text" class="form-control mt-2" name="grades[${subjectId}]" placeholder="Grade" readonly>
+                </div>
+                <button type="button" class="btn btn-danger mt-2" onclick="removeSubject('${subjectDiv.id}')">Delete</button>
             `;
             container.appendChild(subjectDiv);
+        }
+
+        function removeSubject(subjectDivId) {
+            const subjectDiv = document.getElementById(subjectDivId);
+            subjectDiv.parentNode.removeChild(subjectDiv);
         }
 
         function calculateGrade(points) {
@@ -91,19 +105,25 @@
 
         function calculateSGPA() {
             const points = document.querySelectorAll('[name^="points"]');
-            const credits = document.querySelectorAll('select[name^="subjects"]');
+            const subjects = document.querySelectorAll('select[name^="subjects"]');
             let totalPoints = 0;
             let totalCredits = 0;
 
             points.forEach((point, index) => {
-                const creditValue = parseInt(credits[index].selectedOptions[0].text.match(/\((\d+) Credits\)/)[1]);
+                const creditValue = parseInt(subjects[index].selectedOptions[0].text.match(/\((\d+) Credits\)/)[1]);
                 totalPoints += point.value * creditValue;
                 totalCredits += creditValue;
             });
 
             const sgpa = totalPoints / totalCredits;
             document.getElementById('cgpa').value = sgpa.toFixed(2);
-            document.getElementById('grade').value = calculateGrade(sgpa);
+
+            // Calculate grades for each subject and display in the form
+            points.forEach((point, index) => {
+                const grade = calculateGrade(point.value);
+                const gradeInput = document.querySelectorAll('[name^="grades"]')[index];
+                gradeInput.value = grade;
+            });
         }
     </script>
 </head>
@@ -145,24 +165,6 @@
                 "CSCA 523 - Project Report and Viva-voce (4 Credits)"
             ]
         ];
-
-        function calculateGrade($points) {
-            if ($points >= 9.00) {
-                return 'O';
-            } elseif ($points >= 8.00) {
-                return 'A+';
-            } elseif ($points >= 7.00) {
-                return 'A';
-            } elseif ($points >= 6.00) {
-                return 'B+';
-            } elseif ($points >= 5.00) {
-                return 'B';
-            } elseif ($points >= 4.00) {
-                return 'C';
-            } else {
-                return 'P';
-            }
-        }
     ?>
 
     <!-- Header section -->
@@ -186,71 +188,64 @@
     <!-- Form section -->
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
-                <div class="card p-3 mb-3">
-                    <form id="marksForm" action="submit_marks.php" method="post" onsubmit="calculateSGPA(); return false;">
-                        <input type="hidden" name="semester" value="<?php echo $semester; ?>">
-                        <input type="hidden" name="name" value="<?php echo $name; ?>">
-                        <input type="hidden" name="register_no" value="<?php echo $register_no; ?>">
-                        <input type="hidden" name="session" value="<?php echo $session; ?>">
-                        <input type="hidden" name="programme" value="<?php echo $programme; ?>">
-                        <input type="hidden" name="specialization" value="<?php echo $specialization; ?>">
+            <div class="col">
+                <h2>Student Details</h2>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Name of the Student</th>
+                            <td><?php echo $name; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Register Number</th>
+                            <td><?php echo $register_no; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Session</th>
+                            <td><?php echo $session; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Programme</th>
+                            <td><?php echo $programme; ?></td>
+                        </tr>
+                        <tr>
+                            <th>Specialization</th>
+                            <td><?php echo $specialization; ?></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                        <h5>Semester: <?php echo $semester; ?></h5>
-                        <h5>Name: <?php echo $name; ?></h5>
-                        <h5>Register No: <?php echo $register_no; ?></h5>
-                        <h5>Session: <?php echo $session; ?></h5>
-                        <h5>Programme: <?php echo $programme; ?></h5>
-                        <h5>Specialization: <?php echo $specialization; ?></h5>
-
-                        <h3>Core Subjects:</h3>
-                        <?php
-                            foreach ($coreSubjects[$semester] as $subject) {
-                                echo '
-                                    <div class="form-group">
-                                        <label>' . $subject . ':</label>
-                                        <input type="number" class="form-control" name="points[]" min="0" max="10" step="0.01" placeholder="Enter Points" required>
-                                        <input type="number" class="form-control mt-2" name="marks[]" min="0" max="100" step="1" placeholder="Enter Marks" required>
-                                    </div>
-                                ';
-                            }
-                        ?>
-
-                        <div id="additionalSubjects"></div>
-                        
-                        <div class="form-group">
-                            <label for="grade">Grade:</label>
-                            <input type="text" class="form-control" id="grade" name="grade" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="result">Result:</label>
-                            <input type="text" class="form-control" id="result" name="result" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cgpa">CGPA:</label>
-                            <input type="text" class="form-control" id="cgpa" name="cgpa" readonly>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-md-4">
+                <h2>Core Subjects</h2>
                 <div class="scrolling-subjects">
-                    <h4>Available Subjects</h4>
-                    <ul class="list-group">
-                        <li class="list-group-item"><button type="button" class="btn btn-link" onclick="addSubject('supportiveCore1')">Supportive Core #1</button></li>
-                        <li class="list-group-item"><button type="button" class="btn btn-link" onclick="addSubject('domainSpecificElective1')">Domain Specific Elective #1</button></li>
-                        <li class="list-group-item"><button type="button" class="btn btn-link" onclick="addSubject('domainSpecificElective2')">Domain Specific Elective #2</button></li>
-                        <li class="list-group-item"><button type="button" class="btn btn-link" onclick="addSubject('openElective1')">Open Elective #1</button></li>
-                        <li class="list-group-item"><button type="button" class="btn btn-link" onclick="addSubject('supportiveCore2')">Supportive Core #2</button></li>
-                        <li class="list-group-item"><button type="button" class="btn btn-link" onclick="addSubject('skillEnhancement1')">Skill Enhancement Programme #1</button></li>
-                        <li class="list-group-item"><button type="button" class="btn btn-link" onclick="addSubject('skillEnhancement2')">Skill Enhancement Programme #2</button></li>
-                    </ul>
+                    <?php foreach ($coreSubjects[$semester] as $index => $subject): ?>
+                        <div class="form-group">
+                            <label for="coreSubject<?php echo $index; ?>"><?php echo $subject; ?></label>
+                            <input type="hidden" name="subjects[core][<?php echo $index; ?>][name]" value="<?php echo $subject; ?>">
+                            <input type="number" class="form-control mt-2" name="points[core][<?php echo $index; ?>]" min="0" max="10" step="0.01" placeholder="Enter Points" required>
+                            <input type="number" class="form-control mt-2" name="marks[core][<?php echo $index; ?>]" min="0" max="100" step="1" placeholder="Enter Marks" required>
+                            <input type="text" class="form-control mt-2" name="grades[core][<?php echo $index; ?>]" placeholder="Grade" readonly>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
+
+                <h2>Additional Subjects</h2>
+                <div id="additionalSubjects" class="scrolling-subjects"></div>
+                <div class="form-group">
+                    <label for="subjectDropdown">Add Subject:</label>
+                    <select class="form-control" id="subjectDropdown">
+                        <option value="" disabled selected>Select Subject</option>
+                        <?php foreach ($subjectNames as $id => $name): ?>
+                            <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button type="button" class="btn btn-primary mt-2" onclick="addSubject(subjectDropdown.value)">Add</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="cgpa">SGPA</label>
+                    <input type="text" class="form-control" id="cgpa" readonly>
+                </div>
+                <button type="button" class="btn btn-success" onclick="calculateSGPA()">Calculate SGPA</button>
             </div>
         </div>
     </div>
