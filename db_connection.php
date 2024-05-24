@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost"; // Update with your server name
-$username = "root"; // Update with your database username
-$password = ""; // Update with your database password
-$dbname = "university"; // Update with your database name
+$servername = "localhost"; 
+$username = "root"; 
+$password = ""; 
+$dbname = "university";
 
 // Create connection
 $connection = new mysqli($servername, $username, $password, $dbname);

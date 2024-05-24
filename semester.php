@@ -51,38 +51,57 @@
         };
 
         function addSubject(subjectId) {
-            if (!subjectId) return;
-
             const container = document.getElementById('additionalSubjects');
             const subjectDiv = document.createElement('div');
             subjectDiv.className = 'form-group';
-            subjectDiv.id = subjectId + '-' + container.children.length;
 
             let optionsHTML = '';
             subjectOptions[subjectId].forEach(option => {
-                optionsHTML += <option value="${option}">${option}</option>;
+                optionsHTML += `<option value="${option}">${option}</option>`;
             });
 
             subjectDiv.innerHTML = `
-                <div class="form-group">
-                    <label for="${subjectId}">${subjectNames[subjectId]}:</label>
-                    <select class="form-control" name="subjects[${subjectId}]">
-                        ${optionsHTML}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="number" class="form-control mt-2" name="points[${subjectId}]" min="0" max="10" step="0.01" placeholder="Enter Points" required>
-                    <input type="number" class="form-control mt-2" name="marks[${subjectId}]" min="0" max="100" step="1" placeholder="Enter Marks" required>
-                    <input type="text" class="form-control mt-2" name="grades[${subjectId}]" placeholder="Grade" readonly>
-                </div>
-                <button type="button" class="btn btn-danger mt-2" onclick="removeSubject('${subjectDiv.id}')">Delete</button>
+                <label for="${subjectId}">${subjectNames[subjectId]}:</label>
+                <select class="form-control" id="${subjectId}" name="subjects[${subjectId}]">
+                    ${optionsHTML}
+                </select>
+                <input type="number" class="form-control mt-2" name="points[${subjectId}]" min="0" max="10" step="0.01" placeholder="Enter Points" required>
+                <input type="number" class="form-control mt-2" name="marks[${subjectId}]" min="0" max="100" step="1" placeholder="Enter Marks" required>
+                <select class="form-control mt-2" name="grades[${subjectId}]" required>
+                    <option value="">Select Grade</option>
+                    <option value="O">O</option>
+                    <option value="A+">A+</option>
+                    <option value="A">A</option>
+                    <option value="B+">B+</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="P">P</option>
+                    <option value="F">F</option>
+                </select>
+                <button type="button" class="btn btn-danger mt-2" onclick="removeSubject(this.parentElement)">Delete</button>
             `;
             container.appendChild(subjectDiv);
         }
 
-        function removeSubject(subjectDivId) {
-            const subjectDiv = document.getElementById(subjectDivId);
+        function removeSubject(subjectDiv) {
             subjectDiv.parentNode.removeChild(subjectDiv);
+        }
+
+        function calculateSGPA() {
+            const points = document.querySelectorAll('[name^="points"]');
+            const credits = document.querySelectorAll('select[name^="subjects"]');
+            let totalPoints = 0;
+            let totalCredits = 0;
+
+            points.forEach((point, index) => {
+                const creditValue = parseInt(credits[index].selectedOptions[0].text.match(/\((\d+) Credits\)/)[1]);
+                totalPoints += point.value * creditValue;
+                totalCredits += creditValue;
+            });
+
+            const sgpa = totalPoints / totalCredits;
+            document.getElementById('cgpa').value = sgpa.toFixed(2);
+            document.getElementById('grade').value = calculateGrade(sgpa);
         }
 
         function calculateGrade(points) {
@@ -102,41 +121,16 @@
                 return 'P';
             }
         }
-
-        function calculateSGPA() {
-            const points = document.querySelectorAll('[name^="points"]');
-            const subjects = document.querySelectorAll('select[name^="subjects"]');
-            let totalPoints = 0;
-            let totalCredits = 0;
-
-            points.forEach((point, index) => {
-                const creditValue = parseInt(subjects[index].selectedOptions[0].text.match(/\((\d+) Credits\)/)[1]);
-                totalPoints += point.value * creditValue;
-                totalCredits += creditValue;
-            });
-
-            const sgpa = totalPoints / totalCredits;
-            document.getElementById('cgpa').value = sgpa.toFixed(2);
-
-            // Calculate grades for each subject and display in the form
-            points.forEach((point, index) => {
-                const grade = calculateGrade(point.value);
-                const gradeInput = document.querySelectorAll('[name^="grades"]')[index];
-                gradeInput.value = grade;
-            });
-        }
     </script>
 </head>
 <body>
     <?php
-
-        include 'db_connection.php';
-        $semester = $_GET['semester'];
-        $name = $_GET['name'];
-        $register_no = $_GET['register_no'];
-        $session = $_GET['session'];
-        $programme = $_GET['programme'];
-        $specialization = $_GET['specialization'];
+        $semester = isset($_GET['semester']) ? $_GET['semester'] : '';
+        $name = isset($_GET['name']) ? $_GET['name'] : '';
+        $register_no = isset($_GET['register_no']) ? $_GET['register_no'] : '';
+        $session = isset($_GET['session']) ? $_GET['session'] : '';
+        $programme = isset($_GET['programme']) ? $_GET['programme'] : '';
+        $specialization = isset($_GET['specialization']) ? $_GET['specialization'] : '';
 
         $coreSubjects = [
             1 => [
@@ -164,16 +158,28 @@
             4 => [
                 "CSCA 521 - Project Work (4 Credits)",
                 "CSCA 522 - Project Seminar (4 Credits)",
-                "CSCA 523 - Project Report and Viva-voce (4 Credits)"
+                "CSCA 523 - Project Report and Viva-voce (4 Credits)",
+                "CSCA 524 - Compulsory Subject Name (3 Credits)"  // Add the compulsory subject here
             ]
         ];
 
-        $query = "SELECT subject_code, subject_name FROM subjects WHERE hardcore_softcore = 'S'";
-        $result = mysqli_query($connection, $query);
-        
-        $additionalSubjects = [];
-        while ($row = mysqli_fetch_assoc($result)) {
-            $additionalSubjects[$row['subject_code']] = $row['subject_name'];}
+        function calculateGrade($points) {
+            if ($points >= 9.00) {
+                return 'O';
+            } elseif ($points >= 8.00) {
+                return 'A+';
+            } elseif ($points >= 7.00) {
+                return 'A';
+            } elseif ($points >= 6.00) {
+                return 'B+';
+            } elseif ($points >= 5.00) {
+                return 'B';
+            } elseif ($points >= 4.00) {
+                return 'C';
+            } else {
+                return 'P';
+            }
+        }
     ?>
 
     <!-- Header section -->
@@ -181,7 +187,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-2">
-                    <img src="pu_logo.png" alt="Pondicherry University Logo">
+                    <img src="image.png" alt="Pondicherry University Logo">
                 </div>
                 <div class="col-8">
                     <h1 class="mb-0">PONDICHERRY UNIVERSITY <br> (A Central University)</h1>
@@ -197,71 +203,92 @@
     <!-- Form section -->
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h2>Student Details</h2>
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <th>Name of the Student</th>
-                            <td><?php echo $name; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Register Number</th>
-                            <td><?php echo $register_no; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Session</th>
-                            <td><?php echo $session; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Programme</th>
-                            <td><?php echo $programme; ?></td>
-                        </tr>
-                        <tr>
-                            <th>Specialization</th>
-                            <td><?php echo $specialization; ?></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-md-8">
+                <div class="card p-3 mb-3">
+                    <form id="marksForm" action="submit_marks.php" method="post" onsubmit="calculateSGPA(); return false;">
+                        <input type="hidden" name="semester" value="<?php echo $semester; ?>">
+                        <input type="hidden" name="name" value="<?php echo $name; ?>">
+                        <input type="hidden" name="register_no" value="<?php echo $register_no; ?>">
+                        <input type="hidden" name="session" value="<?php echo $session; ?>">
+                        <input type="hidden" name="programme" value="<?php echo $programme; ?>">
+                        <input type="hidden" name="specialization" value="<?php echo $specialization; ?>">
 
-                <h2>Core Subjects</h2>
-                <div class="scrolling-subjects">
-                    <?php foreach ($coreSubjects[$semester] as $index => $subject): ?>
+                        <!-- Core Subjects Section -->
                         <div class="form-group">
-                            <label for="coreSubject<?php echo $index; ?>"><?php echo $subject; ?></label>
-                            <input type="hidden" name="subjects[core][<?php echo $index; ?>][name]" value="<?php echo $subject; ?>">
-                            <input type="number" class="form-control mt-2" name="points[core][<?php echo $index; ?>]" min="0" max="10" step="0.01" placeholder="Enter Points" required>
-                            <input type="number" class="form-control mt-2" name="marks[core][<?php echo $index; ?>]" min="0" max="100" step="1" placeholder="Enter Marks" required>
-                            <input type="text" class="form-control mt-2" name="grades[core][<?php echo $index; ?>]" placeholder="Grade" readonly>
+                            <label>Core Subjects:</label>
+                            <div class="scrolling-subjects">
+                                <?php
+                                // Check if the key exists in the $coreSubjects array
+                                if (isset($coreSubjects[$semester])) {
+                                    foreach ($coreSubjects[$semester] as $subject) {
+                                        echo '<div class="form-group">';
+                                        echo '<label>' . $subject . ':</label>';
+                                        echo '<input type="number" class="form-control mt-2" name="core_points[]" min="0" max="10" step="0.01" placeholder="Enter Points" required>';
+                                        echo '<input type="number" class="form-control mt-2" name="core_marks[]" min="0" max="100" step="1" placeholder="Enter Marks" required>';
+                                        echo '<select class="form-control mt-2" name="core_grades[]">';
+                                        echo '<option value="">Select Grade</option>';
+                                        echo '<option value="O">O</option>';
+                                        echo '<option value="A+">A+</option>';
+                                        echo '<option value="A">A</option>';
+                                        echo '<option value="B+">B+</option>';
+                                        echo '<option value="B">B</option>';
+                                        echo '<option value="C">C</option>';
+                                        echo '<option value="P">P</option>';
+                                        echo '<option value="F">F</option>';
+                                        echo '</select>';
+                                        echo '</div>';
+                                    }
+                                } else {
+                                    echo '<p>No core subjects found for this semester.</p>';
+                                }
+                                ?>
+                            </div>
                         </div>
-                    <?php endforeach; ?>
-                </div>
 
-               <!-- Additional Subjects section -->
-<h2>Additional Subjects</h2>
-<div id="additionalSubjects" class="scrolling-subjects">
-    <!-- This is where the additional subjects will be listed -->
-</div>
-<div class="form-group">
-    <label for="subjectDropdown">Add Subject:</label>
-    <select class="form-control" id="subjectDropdown">
-        <option value="" disabled selected>Select Subject</option>
-        <?php
-            // Populate dropdown with additional subjects
-            foreach ($additionalSubjects as $id => $name) {
-                echo "<option value=\"$id\">$name</option>";
-            }
-        ?>
-    </select>
-    <button type="button" class="btn btn-primary mt-2" onclick="addSubject(subjectDropdown.value)">Add</button>
-</div>
-                <div class="form-group">
-                    <label for="cgpa">SGPA</label>
-                    <input type="text" class="form-control" id="cgpa" readonly>
+                        <!-- Additional Subjects Section -->
+                        <div id="additionalSubjects"></div>
+
+                        <!-- Buttons to add more subjects -->
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" onclick="addSubject('supportiveCore1')">Add Supportive Core</button>
+                            <button type="button" class="btn btn-primary" onclick="addSubject('domainSpecificElective1')">Add Domain Specific Elective</button>
+                            <button type="button" class="btn btn-primary" onclick="addSubject('domainSpecificElective2')">Add Domain Specific Elective</button>
+                            <button type="button" class="btn btn-primary" onclick="addSubject('openElective1')">Add Open Elective</button>
+                            <button type="button" class="btn btn-primary" onclick="addSubject('supportiveCore2')">Add Supportive Core</button>
+                            <button type="button" class="btn btn-primary" onclick="addSubject('skillEnhancement1')">Add Skill Enhancement</button>
+                            <button type="button" class="btn btn-primary" onclick="addSubject('skillEnhancement2')">Add Skill Enhancement</button>
+                        </div>
+
+                        <!-- Submit and result display section -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Calculate SGPA</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="cgpa">SGPA:</label>
+                            <input type="text" id="cgpa" class="form-control" readonly>
+                        </div>
+                        
+                    </form>
                 </div>
-                <button type="button" class="btn btn-success" onclick="calculateSGPA()">Calculate SGPA</button>
+            </div>
+            <div class="col-md-4">
+                <!-- Display Student Information -->
+                <div class="card p-3 mb-3">
+                    <h5>Student Information</h5>
+                    <p><strong>Name:</strong> <?php echo $name; ?></p>
+                    <p><strong>Register No:</strong> <?php echo $register_no; ?></p>
+                    <p><strong>Session:</strong> <?php echo $session; ?></p>
+                    <p><strong>Programme:</strong> <?php echo $programme; ?></p>
+                    <p><strong>Specialization:</strong> <?php echo $specialization; ?></p>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Footer section -->
+    <footer class="text-center mt-3">
+        <p>© Pondicherry University 2024</p>
+    </footer>
+
 </body>
 </html>

@@ -13,7 +13,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-2">
-                    <img src="pu_logo.png" alt="Pondicherry University Logo">
+                    <img src="image.png" alt="Pondicherry University Logo">
                 </div>
                 <div class="col-8">
                     <h1 class="mb-0">PONDICHERRY UNIVERSITY <br> (A Central University)</h1>
@@ -49,6 +49,10 @@
                 <div class="form-group">
                     <label for="specialization">Specialization:</label>
                     <input type="text" class="form-control" id="specialization" name="specialization" required>
+                </div>
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth:</label>
+                    <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
                 </div>
                 <div class="form-group">
                     <label for="semester">Semester:</label>
