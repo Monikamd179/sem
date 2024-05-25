@@ -124,13 +124,15 @@
     </script>
 </head>
 <body>
-    <?php
+     <?php
         $semester = isset($_GET['semester']) ? $_GET['semester'] : '';
         $name = isset($_GET['name']) ? $_GET['name'] : '';
         $register_no = isset($_GET['register_no']) ? $_GET['register_no'] : '';
         $session = isset($_GET['session']) ? $_GET['session'] : '';
         $programme = isset($_GET['programme']) ? $_GET['programme'] : '';
         $specialization = isset($_GET['specialization']) ? $_GET['specialization'] : '';
+        $date_of_birth = isset($_GET['date_of_birth']) ? $_GET['date_of_birth'] : '';
+
 
         $coreSubjects = [
             1 => [
@@ -159,7 +161,7 @@
                 "CSCA 521 - Project Work (4 Credits)",
                 "CSCA 522 - Project Seminar (4 Credits)",
                 "CSCA 523 - Project Report and Viva-voce (4 Credits)",
-                "CSCA 524 - Compulsory Subject Name (3 Credits)"  // Add the compulsory subject here
+                "CSCA 524 - Compulsory Subject Name (3 Credits)" 
             ]
         ];
 
@@ -205,13 +207,14 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card p-3 mb-3">
-                    <form id="marksForm" action="submit_marks.php" method="post" onsubmit="calculateSGPA(); return false;">
+                     <form id="marksForm" action="submit_marks.php" method="post" onsubmit="calculateSGPA(); return false;">
                         <input type="hidden" name="semester" value="<?php echo $semester; ?>">
                         <input type="hidden" name="name" value="<?php echo $name; ?>">
                         <input type="hidden" name="register_no" value="<?php echo $register_no; ?>">
                         <input type="hidden" name="session" value="<?php echo $session; ?>">
                         <input type="hidden" name="programme" value="<?php echo $programme; ?>">
                         <input type="hidden" name="specialization" value="<?php echo $specialization; ?>">
+                        <input type="hidden" name="date_of_birth" value="<?php echo $date_of_birth; ?>">
 
                         <!-- Core Subjects Section -->
                         <div class="form-group">
@@ -273,13 +276,14 @@
             </div>
             <div class="col-md-4">
                 <!-- Display Student Information -->
-                <div class="card p-3 mb-3">
+                 <div class="card p-3 mb-3">
                     <h5>Student Information</h5>
                     <p><strong>Name:</strong> <?php echo $name; ?></p>
                     <p><strong>Register No:</strong> <?php echo $register_no; ?></p>
                     <p><strong>Session:</strong> <?php echo $session; ?></p>
                     <p><strong>Programme:</strong> <?php echo $programme; ?></p>
                     <p><strong>Specialization:</strong> <?php echo $specialization; ?></p>
+                    <p><strong>Date of Birth:</strong> <?php echo $date_of_birth; ?></p>
                 </div>
             </div>
         </div>
