@@ -6,9 +6,68 @@
     <title>Semester Marks</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        body {
+            background-image: url('pu.jpg'); /* Add your background image here */
+            background-size: cover;
+            background-attachment: fixed;
+            color: #333;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: #0056b3; /* Change the font color of headings */
+            font-weight: bold;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        footer {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
         .scrolling-subjects {
             max-height: 400px;
             overflow-y: auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            margin-top: 5px;
+        }
+
+        #cgpa {
+            font-weight: bold;
+            text-align: center;
+            color: #28a745;
         }
     </style>
     <script>
@@ -124,7 +183,7 @@
     </script>
 </head>
 <body>
-     <?php
+    <?php
         $semester = isset($_GET['semester']) ? $_GET['semester'] : '';
         $name = isset($_GET['name']) ? $_GET['name'] : '';
         $register_no = isset($_GET['register_no']) ? $_GET['register_no'] : '';
@@ -189,8 +248,9 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-2">
-                    <img src="image.png" alt="Pondicherry University Logo">
+                    <img src="image.png" alt="Pondicherry University Logo" style="width: 100px; height: auto;">
                 </div>
+
                 <div class="col-8">
                     <h1 class="mb-0">PONDICHERRY UNIVERSITY <br> (A Central University)</h1>
                 </div>
@@ -207,7 +267,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="card p-3 mb-3">
-                     <form id="marksForm" action="submit_marks.php" method="post" onsubmit="calculateSGPA(); return false;">
+                    <form id="marksForm" action="submit_marks.php" method="post" onsubmit="calculateSGPA(); return false;">
                         <input type="hidden" name="semester" value="<?php echo $semester; ?>">
                         <input type="hidden" name="name" value="<?php echo $name; ?>">
                         <input type="hidden" name="register_no" value="<?php echo $register_no; ?>">
@@ -276,7 +336,7 @@
             </div>
             <div class="col-md-4">
                 <!-- Display Student Information -->
-                 <div class="card p-3 mb-3">
+                <div class="card p-3 mb-3">
                     <h5>Student Information</h5>
                     <p><strong>Name:</strong> <?php echo $name; ?></p>
                     <p><strong>Register No:</strong> <?php echo $register_no; ?></p>

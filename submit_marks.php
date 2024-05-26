@@ -211,22 +211,7 @@ $stmt->close();
         }
         ?>
     </table>
-    <button class="print-button" onclick="generatePDF()">Print PDF</button>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script>
-        function generatePDF() {
-            const doc = new jsPDF();
-
-            // Add content to PDF
-            doc.text("Statement of Grades", 10, 10);
-            doc.text("Student Details:", 10, 20);
-            // Add more content as needed
-
-            // Save PDF
-            doc.save("student_grades.pdf");
-        }
-    </script>
+    <a href="download_pdf.php?register_no=<?php echo $register_no; ?>" class="print-button">Download PDF</a>
 </body>
 </html>
 <?php

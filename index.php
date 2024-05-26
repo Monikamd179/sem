@@ -26,10 +26,16 @@
         </div>
     </header>
 
-    <!-- Form section -->
+    <!-- Option section -->
     <div class="container">
         <div class="form-container">
-            <form action="semester.php" method="get">
+            <div class="text-center mb-4">
+                <button class="btn btn-primary mr-2" id="new-student-btn">Register New Student</button>
+                <button class="btn btn-primary" id="fetch-marksheet-btn">Fetch Marksheet</button>
+            </div>
+
+            <!-- New Student Form -->
+            <form action="semester.php" method="get" id="new-student-form" style="display:none;">
                 <div class="form-group">
                     <label for="name">Name of the Candidate:</label>
                     <input type="text" class="form-control" id="name" name="name" required>
@@ -65,6 +71,24 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+
+            <!-- Fetch Marksheet Form -->
+            <form action="fetch_marksheet.php" method="get" id="fetch-marksheet-form" style="display:none;">
+                <div class="form-group">
+                    <label for="register_no_fetch">Register No:</label>
+                    <input type="text" class="form-control" id="register_no_fetch" name="register_no" required>
+                </div>
+                <div class="form-group">
+                    <label for="semester_fetch">Semester:</label>
+                    <select class="form-control" id="semester_fetch" name="semester" required>
+                        <option value="1">1st Semester</option>
+                        <option value="2">2nd Semester</option>
+                        <option value="3">3rd Semester</option>
+                        <option value="4">4th Semester</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Fetch Marksheet</button>
+            </form>
         </div>
     </div>
 
@@ -75,5 +99,16 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('new-student-btn').addEventListener('click', function() {
+            document.getElementById('new-student-form').style.display = 'block';
+            document.getElementById('fetch-marksheet-form').style.display = 'none';
+        });
+
+        document.getElementById('fetch-marksheet-btn').addEventListener('click', function() {
+            document.getElementById('new-student-form').style.display = 'none';
+            document.getElementById('fetch-marksheet-form').style.display = 'block';
+        });
+    </script>
 </body>
 </html>

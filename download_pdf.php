@@ -3,13 +3,15 @@ require 'vendor/autoload.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
+// Include the database connection script
+include 'db_connection.php';
+
+// Fetch student details and other necessary data from the database
 $register_no = $_POST['register_no'] ?? '';
 
 if (!$register_no) {
     die("Register number is required");
 }
-
-include 'db_connection.php';
 
 // Fetch student details
 $studentQuery = "SELECT * FROM students WHERE register_no = ?";
@@ -40,7 +42,7 @@ $additionalSubjectsResult = $stmt->get_result();
 $stmt->close();
 $connection->close();
 
-// HTML content
+// Construct HTML content
 $html = '
 <!DOCTYPE html>
 <html>
