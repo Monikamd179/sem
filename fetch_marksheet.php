@@ -1,10 +1,7 @@
 <?php
-header('Content-Type: application/json');
-
-// Database connection
 $servername = "localhost";
-$username = "root";
-$password = "";
+$username = "root"; // Change this if your username is different
+$password = ""; // Change this if you have a password set
 $dbname = "university";
 
 // Create connection
@@ -15,68 +12,83 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Get the parameters
-$register_no = isset($_GET['register_no']) ? $_GET['register_no'] : '';
-$semester = isset($_GET['semester']) ? $_GET['semester'] : '';
+// Fetch additional_subjects data
+$additional_sql = "SELECT * FROM additional_subjects";
+$additional_result = $conn->query($additional_sql);
 
-if (empty($register_no) || empty($semester)) {
-    die("Register number or semester is missing.");
-}
+// Fetch core_subjects data
+$core_sql = "SELECT * FROM core_subjects";
+$core_result = $conn->query($core_sql);
 
-// Fetch the student information
-$sql_student = "SELECT * FROM students WHERE register_no = ?";
-$stmt_student = $conn->prepare($sql_student);
-$stmt_student->bind_param("s", $register_no);
-$stmt_student->execute();
-$result_student = $stmt_student->get_result();
-
-if ($result_student->num_rows > 0) {
-    $student = $result_student->fetch_assoc();
-
-    // Fetch the marks for the student for the given semester
-    $sql_marks = "SELECT subjects.subject_code, subjects.subject_name, subjects.credit, student_marks.mark, student_marks.grade, student_marks.points
-                  FROM student_marks
-                  JOIN subjects ON student_marks.subject_id = subjects.id
-                  WHERE student_marks.register_no = ? AND subjects.semester = ?";
-    $stmt_marks = $conn->prepare($sql_marks);
-    $stmt_marks->bind_param("si", $register_no, $semester);
-    $stmt_marks->execute();
-    $result_marks = $stmt_marks->get_result();
-
-    if ($result_marks->num_rows > 0) {
-        echo "<h2>Marksheet for " . $student['name'] . " - Semester " . $semester . "</h2>";
-        echo "<table class='table table-bordered'>
-                <thead>
-                    <tr>
-                        <th>Subject Code</th>
-                        <th>Subject Name</th>
-                        <th>Credit</th>
-                        <th>Mark</th>
-                        <th>Grade</th>
-                        <th>Points</th>
-                    </tr>
-                </thead>
-                <tbody>";
-
-        while ($row = $result_marks->fetch_assoc()) {
-            echo "<tr>
-                    <td>" . $row['subject_code'] . "</td>
-                    <td>" . $row['subject_name'] . "</td>
-                    <td>" . $row['credit'] . "</td>
-                    <td>" . $row['mark'] . "</td>
-                    <td>" . $row['grade'] . "</td>
-                    <td>" . $row['points'] . "</td>
-                  </tr>";
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fetch Marks</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Marks Statement</h1>
+    <table>
+        <tr>
+            <th>Semester</th>
+            <th>Subject_name</th>
+            <th>Course Code</th>
+            <th>Credits</th>
+            <th>Marks</th>
+            <th>Grade</th>
+            <th>Point</th>
+        </tr>
+        <?php
+        if ($core_result->num_rows > 0) {
+            while($row = $core_result->fetch_assoc()) {
+                echo "<tr>
+                        <td>{$row['semester']}</td>
+                        <td>{$row['subject_name']}</td>
+                        <td>{$row['subject_code']}</td>
+                        <td>{$row['credits']}</td>
+                        <td>{$row['marks']}</td>
+                        <td>{$row['grade']}</td>
+                        <td>{$row['points']}</td>
+                      </tr>";
+            }
+        } else {
+            echo "<tr><td colspan='7'>No data found</td></tr>";
+        }
+        ?>
+    </table>
 
-        echo "</tbody>
-              </table>";
+    <h2>Cumulative Credits and GPA</h2>
+    <?php
+    // Fetch cumulative credits and GPA data
+    $cumulative_sql = "SELECT SUM(credits) AS total_credits, AVG(points) AS gpa FROM core_subjects";
+    $cumulative_result = $conn->query($cumulative_sql);
+
+    if ($cumulative_result->num_rows > 0) {
+        $cumulative_row = $cumulative_result->fetch_assoc();
+        echo "<p>Cumulative Credits Earned: " . $cumulative_row['total_credits'] . "</p>";
+        echo "<p>Cumulative Grade Point Average: " . number_format($cumulative_row['gpa'], 2) . "</p>";
     } else {
-        echo "No marks found for the specified semester.";
+        echo "<p>No cumulative data found</p>";
     }
-} else {
-    echo "No student found with the specified register number.";
-}
-
+    ?>
+</body>
+</html>
+<?php
 $conn->close();
 ?>

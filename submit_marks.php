@@ -25,45 +25,47 @@ if (isset($_POST['core_points']) && isset($_POST['core_marks']) && isset($_POST[
     $core_marks = $_POST['core_marks'];
     $core_grades = $_POST['core_grades'];
 
-    // Assuming $core_subjects is defined elsewhere, otherwise, you need to define it
     $core_subjects = [
         1 => [
-            "CSCA 411 - Data Structures and Algorithms (3 Credits)",
-            "CSCA 412 - Object Oriented Programming (3 Credits)",
-            "CSCA 413 - Database Management Systems (3 Credits)",
-            "CSCA 414 - Data Structures and Algorithms Lab (2 Credits)",
-            "CSCA 415 - Object Oriented Programming Lab (2 Credits)",
-            "CSCA 416 - Database Management Systems Lab (2 Credits)"
+            ["Data Structures and Algorithms", "CSCA 411", 3],
+            ["Object Oriented Programming", "CSCA 412", 3],
+            ["Database Management Systems", "CSCA 413", 3],
+            ["Data Structures and Algorithms Lab", "CSCA 414", 2],
+            ["Object Oriented Programming Lab", "CSCA 415", 2],
+            ["Database Management Systems Lab", "CSCA 416", 2]
         ],
         2 => [
-            "CSCA 421 - Computer Networks (3 Credits)",
-            "CSCA 422 - Operating Systems (3 Credits)",
-            "CSCA 423 - Communication Skills (2 Credits)",
-            "CSCA 424 - Computer Networks Lab (2 Credits)",
-            "CSCA 425 - Operating Systems Lab (2 Credits)"
+            ["Computer Networks", "CSCA 421", 3],
+            ["Operating Systems", "CSCA 422", 3],
+            ["Communication Skills", "CSCA 423", 2],
+            ["Computer Networks Lab", "CSCA 424", 2],
+            ["Operating Systems Lab", "CSCA 425", 2]
         ],
         3 => [
-            "CSCA 511 - Software Engineering (3 Credits)",
-            "CSCA 512 - Internet and Web Technologies (3 Credits)",
-            "CSCA 513 - Mini Project (2 Credits)",
-            "CSCA 514 - Internet and Web Technologies Lab (2 Credits)",
-            "CSCA 515 - Academic Out-Reach Programme (1 Credit)"
+            ["Software Engineering", "CSCA 511", 3],
+            ["Internet and Web Technologies", "CSCA 512", 3],
+            ["Mini Project", "CSCA 513", 2],
+            ["Internet and Web Technologies Lab", "CSCA 514", 2],
+            ["Academic Out-Reach Programme", "CSCA 515", 1]
         ],
         4 => [
-            "CSCA 521 - Project Work (4 Credits)",
-            "CSCA 522 - Project Seminar (4 Credits)",
-            "CSCA 523 - Project Report and Viva-voce (4 Credits)",
-            "CSCA 524 - Compulsory Subject Name (3 Credits)" 
+            ["Project Work", "CSCA 521", 4],
+            ["Project Seminar", "CSCA 522", 4],
+            ["Project Report and Viva-voce", "CSCA 523", 4],
+            ["Compulsory Subject Name", "CSCA 524", 3]
         ]
     ];
 
     foreach ($core_subjects[$semester] as $index => $subject) {
+        $subject_name = $subject[0];
+        $subject_code = $subject[1];
+        $credits = $subject[2];
         $points = $core_points[$index];
         $marks = $core_marks[$index];
         $grade = $core_grades[$index];
 
-        $stmt = $connection->prepare("INSERT INTO core_subjects (register_no, subject, points, marks, grade, semester) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssi", $register_no, $subject, $points, $marks, $grade, $semester);
+        $stmt = $connection->prepare("INSERT INTO core_subjects (register_no, subject_name, subject_code, credits, points, marks, grade, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssisssi", $register_no, $subject_name, $subject_code, $credits, $points, $marks, $grade, $semester);
 
         if ($stmt->execute()) {
             // Success
@@ -73,26 +75,69 @@ if (isset($_POST['core_points']) && isset($_POST['core_marks']) && isset($_POST[
     }
 }
 
-// Check if additional subjects data is set
+// Insert core subjects if they exist
+if (isset($_POST['core_points']) && isset($_POST['core_marks']) && isset($_POST['core_grades'])) {
+    $core_points = $_POST['core_points'];
+    $core_marks = $_POST['core_marks'];
+    $core_grades = $_POST['core_grades'];
+
+    foreach ($core_subjects[$semester] as $index => $subject) {
+        $subject_name = $subject[0];
+        $subject_code = $subject[1];
+        $credits = $subject[2];
+
+        // Check if array keys exist before accessing them
+        if (isset($core_points[$index]) && isset($core_marks[$index]) && isset($core_grades[$index])) {
+            $points = $core_points[$index];
+            $marks = $core_marks[$index];
+            $grade = $core_grades[$index];
+
+            $stmt = $connection->prepare("INSERT INTO core_subjects (register_no, subject_name, subject_code, credits, points, marks, grade, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssisssi", $register_no, $subject_name, $subject_code, $credits, $points, $marks, $grade, $semester);
+
+            if ($stmt->execute()) {
+                // Success
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+        } else {
+            // Handle the case where the array keys are undefined
+            echo "Error: Core subject data is missing for index $index";
+        }
+    }
+}
+
+// Insert additional subjects if they exist
 if (isset($_POST['subjects']) && isset($_POST['points']) && isset($_POST['marks']) && isset($_POST['grades'])) {
     $subjects = $_POST['subjects'];
     $points = $_POST['points'];
     $marks = $_POST['marks'];
     $grades = $_POST['grades'];
 
-    // Loop through additional subjects data and insert into additional_subjects table
     foreach ($subjects as $subjectKey => $subject) {
-        $pointsValue = $points[$subjectKey];
-        $marksValue = $marks[$subjectKey];
-        $gradeValue = $grades[$subjectKey];
+        // Extract subject name, subject code, and credits from the subject string
+        preg_match('/^(\w+)\s+-\s+(.*?)\s+\((\d+)\s+Credits\)$/', $subject, $matches);
+        $subject_code = $matches[1];
+        $subject_name = $matches[2];
+        $credits = (int)$matches[3];
 
-        $stmt = $connection->prepare("INSERT INTO additional_subjects (register_no, subject, points, marks, grade, semester) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssi", $register_no, $subject, $pointsValue, $marksValue, $gradeValue, $semester);
+        // Check if array keys exist before accessing them
+        if (isset($points[$subjectKey]) && isset($marks[$subjectKey]) && isset($grades[$subjectKey])) {
+            $pointsValue = $points[$subjectKey];
+            $marksValue = $marks[$subjectKey];
+            $gradeValue = $grades[$subjectKey];
 
-        if ($stmt->execute()) {
-            // Success
+            $stmt = $connection->prepare("INSERT INTO additional_subjects (register_no, subject_name, subject_code, credits, points, marks, grade, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssisssi", $register_no, $subject_name, $subject_code, $credits, $pointsValue, $marksValue, $gradeValue, $semester);
+
+            if ($stmt->execute()) {
+                // Success
+            } else {
+                echo "Error: " . $stmt->error;
+            }
         } else {
-            echo "Error: " . $stmt->error;
+            // Handle the case where the array keys are undefined
+            echo "Error: Additional subject data is missing for index $subjectKey";
         }
     }
 }
@@ -102,6 +147,7 @@ $stmt->close();
 
 // Fetch and display the data
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -170,7 +216,9 @@ $stmt->close();
     <h2>Core Subjects:</h2>
     <table>
         <tr>
-            <th>Subject</th>
+            <th>Subject Code</th>
+            <th>Subject Name</th>
+            <th>Credits</th>
             <th>Points</th>
             <th>Marks</th>
             <th>Grade</th>
@@ -180,7 +228,9 @@ $stmt->close();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row['subject'] . "</td>";
+                echo "<td>" . $row['subject_code'] . "</td>";
+                echo "<td>" . $row['subject_name'] . "</td>";
+                echo "<td>" . $row['credits'] . "</td>";
                 echo "<td>" . $row['points'] . "</td>";
                 echo "<td>" . $row['marks'] . "</td>";
                 echo "<td>" . $row['grade'] . "</td>";
@@ -192,7 +242,9 @@ $stmt->close();
     <h2>Additional Subjects:</h2>
     <table>
         <tr>
-            <th>Subject</th>
+            <th>Subject Code</th>
+            <th>Subject Name</th>
+            <th>Credits</th>
             <th>Points</th>
             <th>Marks</th>
             <th>Grade</th>
@@ -202,7 +254,9 @@ $stmt->close();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row['subject'] . "</td>";
+                echo "<td>" . $row['subject_code'] . "</td>";
+                echo "<td>" . $row['subject_name'] . "</td>";
+                echo "<td>" . $row['credits'] . "</td>";
                 echo "<td>" . $row['points'] . "</td>";
                 echo "<td>" . $row['marks'] . "</td>";
                 echo "<td>" . $row['grade'] . "</td>";
