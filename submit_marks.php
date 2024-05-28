@@ -75,38 +75,6 @@ if (isset($_POST['core_points']) && isset($_POST['core_marks']) && isset($_POST[
     }
 }
 
-// Insert core subjects if they exist
-if (isset($_POST['core_points']) && isset($_POST['core_marks']) && isset($_POST['core_grades'])) {
-    $core_points = $_POST['core_points'];
-    $core_marks = $_POST['core_marks'];
-    $core_grades = $_POST['core_grades'];
-
-    foreach ($core_subjects[$semester] as $index => $subject) {
-        $subject_name = $subject[0];
-        $subject_code = $subject[1];
-        $credits = $subject[2];
-
-        // Check if array keys exist before accessing them
-        if (isset($core_points[$index]) && isset($core_marks[$index]) && isset($core_grades[$index])) {
-            $points = $core_points[$index];
-            $marks = $core_marks[$index];
-            $grade = $core_grades[$index];
-
-            $stmt = $connection->prepare("INSERT INTO core_subjects (register_no, subject_name, subject_code, credits, points, marks, grade, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssisssi", $register_no, $subject_name, $subject_code, $credits, $points, $marks, $grade, $semester);
-
-            if ($stmt->execute()) {
-                // Success
-            } else {
-                echo "Error: " . $stmt->error;
-            }
-        } else {
-            // Handle the case where the array keys are undefined
-            echo "Error: Core subject data is missing for index $index";
-        }
-    }
-}
-
 // Insert additional subjects if they exist
 if (isset($_POST['subjects']) && isset($_POST['points']) && isset($_POST['marks']) && isset($_POST['grades'])) {
     $subjects = $_POST['subjects'];
@@ -115,29 +83,35 @@ if (isset($_POST['subjects']) && isset($_POST['points']) && isset($_POST['marks'
     $grades = $_POST['grades'];
 
     foreach ($subjects as $subjectKey => $subject) {
-        // Extract subject name, subject code, and credits from the subject string
-        preg_match('/^(\w+)\s+-\s+(.*?)\s+\((\d+)\s+Credits\)$/', $subject, $matches);
-        $subject_code = $matches[1];
-        $subject_name = $matches[2];
-        $credits = (int)$matches[3];
+        // Extract subject code, subject name, and credits from the subject string using a regex pattern
+        preg_match('/^(.*?) - (.*?) \((\d+) Credits\)$/', $subject, $matches);
+        
+        if (isset($matches[1]) && isset($matches[2]) && isset($matches[3])) {
+            $subject_code = $matches[1];
+            $subject_name = $matches[2];
+            $credits = (int)$matches[3];
 
-        // Check if array keys exist before accessing them
-        if (isset($points[$subjectKey]) && isset($marks[$subjectKey]) && isset($grades[$subjectKey])) {
-            $pointsValue = $points[$subjectKey];
-            $marksValue = $marks[$subjectKey];
-            $gradeValue = $grades[$subjectKey];
+            // Check if array keys exist before accessing them
+            if (isset($points[$subjectKey]) && isset($marks[$subjectKey]) && isset($grades[$subjectKey])) {
+                $pointsValue = $points[$subjectKey];
+                $marksValue = $marks[$subjectKey];
+                $gradeValue = $grades[$subjectKey];
 
-            $stmt = $connection->prepare("INSERT INTO additional_subjects (register_no, subject_name, subject_code, credits, points, marks, grade, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssisssi", $register_no, $subject_name, $subject_code, $credits, $pointsValue, $marksValue, $gradeValue, $semester);
+                $stmt = $connection->prepare("INSERT INTO additional_subjects (register_no, subject_name, subject_code, credits, points, marks, grade, semester) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("sssisssi", $register_no, $subject_name, $subject_code, $credits, $pointsValue, $marksValue, $gradeValue, $semester);
 
-            if ($stmt->execute()) {
-                // Success
+                if ($stmt->execute()) {
+                    // Success
+                } else {
+                    echo "Error: " . $stmt->error;
+                }
             } else {
-                echo "Error: " . $stmt->error;
+                // Handle the case where the array keys are undefined
+                echo "Error: Additional subject data is missing for index $subjectKey";
             }
         } else {
-            // Handle the case where the array keys are undefined
-            echo "Error: Additional subject data is missing for index $subjectKey";
+            // Handle the case where regex does not match
+            echo "Error: Subject format is incorrect for subject: $subject";
         }
     }
 }

@@ -243,7 +243,7 @@
         }
     ?>
 
-<<<<<<< HEAD
+
     <!-- Header section -->
     <header class="text-center mt-3 mb-3">
         <div class="container">
@@ -258,21 +258,7 @@
                 <div class="col-2 text-right">
                     <span>Folio no:</span>
                 </div>
-=======
-   <!-- Header section -->
-<header class="text-center mt-3 mb-3">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-2">
-                <img src="pu_logo.png" alt="Pondicherry University Logo" style="width: 100px; height: 100px;">
-            </div>
-            <div class="col-8">
-                <h1 class="mb-0">PONDICHERRY UNIVERSITY <br> (A Central University)</h1>
-            </div>
-            <div class="col-2 text-right">
-                <span>Folio no:</span>
->>>>>>> 4fa7d3611ef723ec9880fe8e9d7a7330fa3bb8e1
-            </div>
+
         </div>
         <h1 class="mt-4">STATEMENT OF GRADES</h1>
     </div>
