@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2024 at 10:16 AM
+-- Generation Time: May 28, 2024 at 04:21 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -59,7 +59,11 @@ INSERT INTO `additional_subjects` (`id`, `register_no`, `subject_name`, `subject
 (13, '7', 'Mathematics for Computer Science', 'CSCA 431', 3, '7.00', 77, 'A', 1),
 (14, '89798', 'Software Project Management', 'CSEL 561', 3, '9.00', 78, 'B+', 1),
 (16, '22352018', NULL, NULL, 0, '8.00', 87, 'A+', 1),
-(17, '18', NULL, NULL, 0, '8.00', 88, 'A+', 1);
+(17, '18', NULL, NULL, 0, '8.00', 88, 'A+', 1),
+(18, '63', NULL, NULL, 0, '6.00', 56, 'A', 1),
+(19, 'mogamaya', NULL, NULL, 0, '6.00', 56, 'A+', 1),
+(20, '22352037', NULL, NULL, 0, '7.00', 76, 'B+', 1),
+(21, '22352058', 'Mathematics for Computer Science', 'CSCA 431', 3, '7.00', 76, 'B+', 1);
 
 -- --------------------------------------------------------
 
@@ -126,12 +130,6 @@ INSERT INTO `core_subjects` (`id`, `register_no`, `subject_name`, `subject_code`
 (57, '22352018', 'Database Management Systems', 'CSCA 413', 3, '9.00', '94.00', 'A+', 1, '2024-05-26 07:51:27'),
 (58, '22352018', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:51:27'),
 (59, '22352018', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '97.00', 'O', 1, '2024-05-26 07:51:27'),
-(60, '22352018', 'Database Management Systems Lab', 'CSCA 416', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:51:27'),
-(61, '22352018', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:51:27'),
-(62, '22352018', 'Object Oriented Programming', 'CSCA 412', 3, '7.00', '77.00', 'A', 1, '2024-05-26 07:51:27'),
-(63, '22352018', 'Database Management Systems', 'CSCA 413', 3, '9.00', '94.00', 'A+', 1, '2024-05-26 07:51:27'),
-(64, '22352018', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:51:27'),
-(65, '22352018', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '97.00', 'O', 1, '2024-05-26 07:51:27'),
 (66, '22352018', 'Database Management Systems Lab', 'CSCA 416', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:51:27'),
 (67, '18', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:58:58'),
 (68, '18', 'Object Oriented Programming', 'CSCA 412', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:58:58'),
@@ -139,12 +137,54 @@ INSERT INTO `core_subjects` (`id`, `register_no`, `subject_name`, `subject_code`
 (70, '18', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:58:58'),
 (71, '18', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '98.00', 'A+', 1, '2024-05-26 07:58:58'),
 (72, '18', 'Database Management Systems Lab', 'CSCA 416', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:58:58'),
-(73, '18', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:58:58'),
-(74, '18', 'Object Oriented Programming', 'CSCA 412', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:58:58'),
-(75, '18', 'Database Management Systems', 'CSCA 413', 3, '7.00', '77.00', 'A', 1, '2024-05-26 07:58:58'),
-(76, '18', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:58:58'),
-(77, '18', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '98.00', 'A+', 1, '2024-05-26 07:58:58'),
-(78, '18', 'Database Management Systems Lab', 'CSCA 416', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:58:58');
+(79, '63', 'Data Structures and Algorithms', 'CSCA 411', 3, '7.99', '78.00', 'P', 1, '2024-05-28 06:04:07'),
+(80, '63', 'Object Oriented Programming', 'CSCA 412', 3, '9.00', '67.00', 'A+', 1, '2024-05-28 06:04:07'),
+(81, '63', 'Database Management Systems', 'CSCA 413', 3, '6.00', '67.00', 'A', 1, '2024-05-28 06:04:07'),
+(82, '63', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '7.00', '67.00', 'A+', 1, '2024-05-28 06:04:07'),
+(83, '63', 'Object Oriented Programming Lab', 'CSCA 415', 2, '8.00', '67.00', '', 1, '2024-05-28 06:04:07'),
+(84, '63', 'Database Management Systems Lab', 'CSCA 416', 2, '7.00', '89.00', 'B', 1, '2024-05-28 06:04:07'),
+(85, '63', 'Data Structures and Algorithms', 'CSCA 411', 3, '7.99', '78.00', 'P', 1, '2024-05-28 06:04:07'),
+(86, '63', 'Object Oriented Programming', 'CSCA 412', 3, '9.00', '67.00', 'A+', 1, '2024-05-28 06:04:07'),
+(87, '63', 'Database Management Systems', 'CSCA 413', 3, '6.00', '67.00', 'A', 1, '2024-05-28 06:04:07'),
+(88, '63', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '7.00', '67.00', 'A+', 1, '2024-05-28 06:04:07'),
+(89, '63', 'Object Oriented Programming Lab', 'CSCA 415', 2, '8.00', '67.00', '', 1, '2024-05-28 06:04:07'),
+(90, '63', 'Database Management Systems Lab', 'CSCA 416', 2, '7.00', '89.00', 'B', 1, '2024-05-28 06:04:07'),
+(91, 'mogamaya', 'Data Structures and Algorithms', 'CSCA 411', 3, '7.00', '67.00', 'B+', 1, '2024-05-28 06:09:45'),
+(92, 'mogamaya', 'Object Oriented Programming', 'CSCA 412', 3, '6.00', '65.00', 'A+', 1, '2024-05-28 06:09:45'),
+(93, 'mogamaya', 'Database Management Systems', 'CSCA 413', 3, '8.00', '67.00', 'A+', 1, '2024-05-28 06:09:45'),
+(94, 'mogamaya', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '6.00', '67.00', 'A', 1, '2024-05-28 06:09:45'),
+(95, 'mogamaya', 'Object Oriented Programming Lab', 'CSCA 415', 2, '6.00', '56.00', 'A', 1, '2024-05-28 06:09:45'),
+(96, 'mogamaya', 'Database Management Systems Lab', 'CSCA 416', 2, '6.00', '56.00', 'A+', 1, '2024-05-28 06:09:45'),
+(97, 'mogamaya', 'Data Structures and Algorithms', 'CSCA 411', 3, '7.00', '67.00', 'B+', 1, '2024-05-28 06:09:45'),
+(98, 'mogamaya', 'Object Oriented Programming', 'CSCA 412', 3, '6.00', '65.00', 'A+', 1, '2024-05-28 06:09:45'),
+(99, 'mogamaya', 'Database Management Systems', 'CSCA 413', 3, '8.00', '67.00', 'A+', 1, '2024-05-28 06:09:45'),
+(100, 'mogamaya', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '6.00', '67.00', 'A', 1, '2024-05-28 06:09:45'),
+(101, 'mogamaya', 'Object Oriented Programming Lab', 'CSCA 415', 2, '6.00', '56.00', 'A', 1, '2024-05-28 06:09:45'),
+(102, 'mogamaya', 'Database Management Systems Lab', 'CSCA 416', 2, '6.00', '56.00', 'A+', 1, '2024-05-28 06:09:45'),
+(103, '22352037', 'Data Structures and Algorithms', 'CSCA 411', 3, '6.00', '56.00', 'C', 1, '2024-05-28 06:16:16'),
+(104, '22352037', 'Object Oriented Programming', 'CSCA 412', 3, '5.00', '65.00', 'A', 1, '2024-05-28 06:16:16'),
+(105, '22352037', 'Database Management Systems', 'CSCA 413', 3, '6.00', '67.00', 'B+', 1, '2024-05-28 06:16:16'),
+(106, '22352037', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '8.00', '67.00', 'A', 1, '2024-05-28 06:16:16'),
+(107, '22352037', 'Object Oriented Programming Lab', 'CSCA 415', 2, '8.00', '78.00', 'B+', 1, '2024-05-28 06:16:16'),
+(108, '22352037', 'Database Management Systems Lab', 'CSCA 416', 2, '7.00', '76.00', 'B+', 1, '2024-05-28 06:16:16'),
+(109, '22352037', 'Data Structures and Algorithms', 'CSCA 411', 3, '6.00', '56.00', 'C', 1, '2024-05-28 06:16:16'),
+(110, '22352037', 'Object Oriented Programming', 'CSCA 412', 3, '5.00', '65.00', 'A', 1, '2024-05-28 06:16:16'),
+(111, '22352037', 'Database Management Systems', 'CSCA 413', 3, '6.00', '67.00', 'B+', 1, '2024-05-28 06:16:16'),
+(112, '22352037', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '8.00', '67.00', 'A', 1, '2024-05-28 06:16:16'),
+(113, '22352037', 'Object Oriented Programming Lab', 'CSCA 415', 2, '8.00', '78.00', 'B+', 1, '2024-05-28 06:16:16'),
+(114, '22352037', 'Database Management Systems Lab', 'CSCA 416', 2, '7.00', '76.00', 'B+', 1, '2024-05-28 06:16:16'),
+(115, '22352078', 'Data Structures and Algorithms', 'CSCA 411', 3, '3.00', '89.00', 'B', 1, '2024-05-28 06:25:19'),
+(116, '22352078', 'Object Oriented Programming', 'CSCA 412', 3, '9.00', '90.00', 'A+', 1, '2024-05-28 06:25:19'),
+(117, '22352078', 'Database Management Systems', 'CSCA 413', 3, '9.00', '89.00', 'A+', 1, '2024-05-28 06:25:19'),
+(118, '22352078', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '9.00', '89.00', 'B+', 1, '2024-05-28 06:25:19'),
+(119, '22352078', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '89.00', 'O', 1, '2024-05-28 06:25:19'),
+(120, '22352078', 'Database Management Systems Lab', 'CSCA 416', 2, '9.00', '89.00', 'B+', 1, '2024-05-28 06:25:19'),
+(121, '22352058', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '65.00', 'A', 1, '2024-05-28 06:31:23'),
+(122, '22352058', 'Object Oriented Programming', 'CSCA 412', 3, '6.00', '65.00', 'B', 1, '2024-05-28 06:31:23'),
+(123, '22352058', 'Database Management Systems', 'CSCA 413', 3, '8.00', '76.00', 'B', 1, '2024-05-28 06:31:23'),
+(124, '22352058', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '7.00', '65.00', 'B', 1, '2024-05-28 06:31:23'),
+(125, '22352058', 'Object Oriented Programming Lab', 'CSCA 415', 2, '7.00', '67.00', 'A', 1, '2024-05-28 06:31:23'),
+(126, '22352058', 'Database Management Systems Lab', 'CSCA 416', 2, '7.00', '78.00', 'A', 1, '2024-05-28 06:31:23');
 
 -- --------------------------------------------------------
 
@@ -175,6 +215,9 @@ INSERT INTO `students` (`register_no`, `name`, `date_of_birth`, `session`, `prog
 ('2223523038', 'Monika', '2024-05-18', '2023', 'cs', 'mca'),
 ('2235', 'mala', '2024-05-03', '2024', 'cs', 'mca'),
 ('22352018', 'Dheepan G', '2002-04-22', '2024', 'cs', 'mca'),
+('22352037', 'mogamaya', '2024-05-07', '2024', 'mca', 'cs'),
+('22352058', 'santhosh', '2024-05-01', '2024', 'mca', 'cs'),
+('22352078', 'udhay', '2024-05-07', '2024', 'mca', 'cs'),
 ('2235254', 'mala', '2024-05-03', '2024', 'cs', 'mca'),
 ('223566', 'mala', '2024-05-03', '2024', 'cs', 'mca'),
 ('223568', 'Monika', '2024-03-07', '2024', 'cs', 'gg'),
@@ -183,11 +226,13 @@ INSERT INTO `students` (`register_no`, `name`, `date_of_birth`, `session`, `prog
 ('2876', 'Monika', '2024-05-18', '2023', 'cs', 'mca'),
 ('38928', 'udhayakumar', '2024-05-17', '2024', 'cs', 'mca'),
 ('38928783', 'udhay', '2024-05-17', '2024', 'cs', 'mca'),
+('63', 'Siva', '2001-10-20', '2024', 'cs', 'mca'),
 ('75', 'archu', '2024-02-16', '2024', 'cs', 'mca'),
 ('765764', 'maya', '2024-05-12', '2024', 'cs', 'mca'),
 ('873983', 'hemachandran', '2024-05-09', '2024', 'cs', 'mca'),
 ('89798', 'Monika', '2024-05-11', '2024', 'cs', 'mca'),
-('90', 'archu', '2024-02-16', '2024', 'cs', 'mca');
+('90', 'archu', '2024-02-16', '2024', 'cs', 'mca'),
+('mogamaya', '22352037', '2024-05-07', '2024', 'mca', 'cs');
 
 -- --------------------------------------------------------
 
@@ -288,13 +333,13 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT for table `additional_subjects`
 --
 ALTER TABLE `additional_subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `core_subjects`
 --
 ALTER TABLE `core_subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

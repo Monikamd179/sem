@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2024 at 12:22 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: May 26, 2024 at 10:16 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,7 +30,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `additional_subjects` (
   `id` int(11) NOT NULL,
   `register_no` varchar(20) DEFAULT NULL,
-  `subject` varchar(255) DEFAULT NULL,
+  `subject_name` varchar(100) DEFAULT NULL,
+  `subject_code` varchar(20) DEFAULT NULL,
+  `credits` int(11) DEFAULT NULL,
   `points` decimal(5,2) DEFAULT NULL,
   `marks` int(11) DEFAULT NULL,
   `grade` varchar(2) DEFAULT NULL,
@@ -41,21 +43,23 @@ CREATE TABLE `additional_subjects` (
 -- Dumping data for table `additional_subjects`
 --
 
-INSERT INTO `additional_subjects` (`id`, `register_no`, `subject`, `points`, `marks`, `grade`, `semester`) VALUES
-(1, '2235', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 9.00, 89, 'B+', 1),
-(2, '873983', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 8.00, 78, 'B+', 1),
-(3, '38928783', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 9.00, 80, 'B', 1),
-(4, '38928', 'CSEL 441 - Fundamentals of Cryptography (3 Credits)', 8.00, 89, 'C', 1),
-(5, '0987654321', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 9.00, 89, 'P', 1),
-(6, '0987', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 8.00, 78, 'A+', 1),
-(7, '244', 'CSEL 441 - Fundamentals of Cryptography (3 Credits)', 9.00, 98, 'P', 1),
-(8, '24', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 9.00, 87, 'B+', 1),
-(9, '2876', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 9.00, 90, 'B', 1),
-(10, '765764', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 9.00, 89, 'B', 1),
-(11, '223568', 'CSEL 441 - Fundamentals of Cryptography (3 Credits)', 7.00, 77, 'A', 1),
-(12, '5', 'CSEL 441 - Fundamentals of Cryptography (3 Credits)', 7.00, 77, 'B+', 1),
-(13, '7', 'CSCA 431 - Mathematics for Computer Science (3 Credits)', 7.00, 77, 'A', 1),
-(14, '89798', 'CSEL 561 - Software Project Management (3 Credits)', 9.00, 78, 'B+', 1);
+INSERT INTO `additional_subjects` (`id`, `register_no`, `subject_name`, `subject_code`, `credits`, `points`, `marks`, `grade`, `semester`) VALUES
+(1, '2235', 'Mathematics for Computer Science', 'CSCA 431', 3, '9.00', 89, 'B+', 1),
+(2, '873983', 'Mathematics for Computer Science', 'CSCA 431', 3, '8.00', 78, 'B+', 1),
+(3, '38928783', 'Mathematics for Computer Science', 'CSCA 431', 3, '9.00', 80, 'B', 1),
+(4, '38928', 'Fundamentals of Cryptography', 'CSEL 441', 3, '8.00', 89, 'C', 1),
+(5, '0987654321', 'Mathematics for Computer Science', 'CSCA 431', 3, '9.00', 89, 'P', 1),
+(6, '0987', 'Mathematics for Computer Science', 'CSCA 431', 3, '8.00', 78, 'A+', 1),
+(7, '244', 'Fundamentals of Cryptography', 'CSEL 441', 3, '9.00', 98, 'P', 1),
+(8, '24', 'Mathematics for Computer Science', 'CSCA 431', 3, '9.00', 87, 'B+', 1),
+(9, '2876', 'Mathematics for Computer Science', 'CSCA 431', 3, '9.00', 90, 'B', 1),
+(10, '765764', 'Mathematics for Computer Science', 'CSCA 431', 3, '9.00', 89, 'B', 1),
+(11, '223568', 'Fundamentals of Cryptography', 'CSEL 441', 3, '7.00', 77, 'A', 1),
+(12, '5', 'Fundamentals of Cryptography', 'CSEL 441', 3, '7.00', 77, 'B+', 1),
+(13, '7', 'Mathematics for Computer Science', 'CSCA 431', 3, '7.00', 77, 'A', 1),
+(14, '89798', 'Software Project Management', 'CSEL 561', 3, '9.00', 78, 'B+', 1),
+(16, '22352018', NULL, NULL, 0, '8.00', 87, 'A+', 1),
+(17, '18', NULL, NULL, 0, '8.00', 88, 'A+', 1);
 
 -- --------------------------------------------------------
 
@@ -66,7 +70,9 @@ INSERT INTO `additional_subjects` (`id`, `register_no`, `subject`, `points`, `ma
 CREATE TABLE `core_subjects` (
   `id` int(11) NOT NULL,
   `register_no` varchar(20) NOT NULL,
-  `subject` varchar(100) NOT NULL,
+  `subject_name` varchar(100) NOT NULL,
+  `subject_code` varchar(20) NOT NULL,
+  `credits` int(11) NOT NULL,
   `points` decimal(4,2) NOT NULL,
   `marks` decimal(5,2) NOT NULL,
   `grade` varchar(2) NOT NULL,
@@ -78,73 +84,67 @@ CREATE TABLE `core_subjects` (
 -- Dumping data for table `core_subjects`
 --
 
-INSERT INTO `core_subjects` (`id`, `register_no`, `subject`, `points`, `marks`, `grade`, `semester`, `created_at`) VALUES
-(1, '0987654321', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 8.00, 78.00, 'A', 1, '2024-05-24 23:24:49'),
-(2, '0987654321', 'CSCA 412 - Object Oriented Programming (3 Credits)', 7.00, 78.00, 'B', 1, '2024-05-24 23:24:49'),
-(3, '0987654321', 'CSCA 413 - Database Management Systems (3 Credits)', 7.00, 89.00, 'C', 1, '2024-05-24 23:24:49'),
-(4, '0987654321', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 8.00, 89.00, 'B', 1, '2024-05-24 23:24:49'),
-(5, '0987654321', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 9.00, 78.00, 'B+', 1, '2024-05-24 23:24:49'),
-(6, '0987654321', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 8.00, 87.00, 'B+', 1, '2024-05-24 23:24:49'),
-(7, '0987', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 9.00, 89.00, 'A', 1, '2024-05-24 23:30:58'),
-(8, '0987', 'CSCA 412 - Object Oriented Programming (3 Credits)', 7.00, 89.00, 'B+', 1, '2024-05-24 23:30:58'),
-(9, '0987', 'CSCA 413 - Database Management Systems (3 Credits)', 7.00, 89.00, 'B+', 1, '2024-05-24 23:30:58'),
-(10, '0987', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 7.00, 89.00, 'B+', 1, '2024-05-24 23:30:58'),
-(11, '0987', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 7.00, 89.00, 'B+', 1, '2024-05-24 23:30:58'),
-(12, '0987', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 7.00, 89.00, 'A', 1, '2024-05-24 23:30:58'),
-(13, '244', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 9.00, 98.00, 'B+', 1, '2024-05-24 23:41:09'),
-(14, '244', 'CSCA 412 - Object Oriented Programming (3 Credits)', 8.00, 89.00, 'A', 1, '2024-05-24 23:41:09'),
-(15, '244', 'CSCA 413 - Database Management Systems (3 Credits)', 9.00, 89.00, 'B', 1, '2024-05-24 23:41:09'),
-(16, '244', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 8.00, 98.00, 'B', 1, '2024-05-24 23:41:09'),
-(17, '244', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 9.00, 76.00, 'B+', 1, '2024-05-24 23:41:09'),
-(18, '244', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 7.00, 89.00, 'B+', 1, '2024-05-24 23:41:09'),
-(19, '24', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 9.00, 98.00, 'B+', 1, '2024-05-24 23:46:47'),
-(20, '24', 'CSCA 412 - Object Oriented Programming (3 Credits)', 9.00, 89.00, 'O', 1, '2024-05-24 23:46:47'),
-(21, '24', 'CSCA 413 - Database Management Systems (3 Credits)', 9.00, 78.00, 'C', 1, '2024-05-24 23:46:47'),
-(22, '24', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 9.00, 87.00, 'B+', 1, '2024-05-24 23:46:47'),
-(23, '24', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 9.00, 87.00, 'B+', 1, '2024-05-24 23:46:47'),
-(24, '24', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 7.00, 87.00, 'B', 1, '2024-05-24 23:46:47'),
-(25, '2876', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 9.00, 98.00, 'A', 1, '2024-05-24 23:52:00'),
-(26, '2876', 'CSCA 412 - Object Oriented Programming (3 Credits)', 9.00, 98.00, 'B', 1, '2024-05-24 23:52:00'),
-(27, '2876', 'CSCA 413 - Database Management Systems (3 Credits)', 9.00, 98.00, 'C', 1, '2024-05-24 23:52:00'),
-(28, '2876', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 9.00, 98.00, 'B+', 1, '2024-05-24 23:52:00'),
-(29, '2876', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 9.00, 87.00, 'B', 1, '2024-05-24 23:52:00'),
-(30, '2876', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 9.00, 89.00, 'B+', 1, '2024-05-24 23:52:00'),
-(31, '2223523', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 9.00, 78.00, 'B+', 1, '2024-05-25 00:17:52'),
-(32, '2223523', 'CSCA 412 - Object Oriented Programming (3 Credits)', 9.00, 78.00, 'B+', 1, '2024-05-25 00:17:52'),
-(33, '2223523', 'CSCA 413 - Database Management Systems (3 Credits)', 9.00, 98.00, 'A', 1, '2024-05-25 00:17:52'),
-(34, '2223523', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 7.00, 89.00, 'A', 1, '2024-05-25 00:17:52'),
-(35, '2223523', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 8.00, 89.00, 'P', 1, '2024-05-25 00:17:52'),
-(36, '2223523', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 7.00, 89.00, 'B', 1, '2024-05-25 00:17:52'),
-(37, '765764', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 8.00, 77.00, 'A+', 1, '2024-05-25 00:34:17'),
-(38, '765764', 'CSCA 412 - Object Oriented Programming (3 Credits)', 7.00, 78.00, 'P', 1, '2024-05-25 00:34:17'),
-(39, '765764', 'CSCA 413 - Database Management Systems (3 Credits)', 7.00, 78.00, 'O', 1, '2024-05-25 00:34:17'),
-(40, '765764', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 9.00, 89.00, 'P', 1, '2024-05-25 00:34:17'),
-(41, '765764', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 7.00, 78.00, 'A+', 1, '2024-05-25 00:34:17'),
-(42, '765764', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 8.00, 78.00, 'A+', 1, '2024-05-25 00:34:17'),
-(43, '223568', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 9.00, 99.00, 'O', 1, '2024-05-25 02:40:23'),
-(44, '223568', 'CSCA 412 - Object Oriented Programming (3 Credits)', 8.00, 88.00, 'A+', 1, '2024-05-25 02:40:23'),
-(45, '223568', 'CSCA 413 - Database Management Systems (3 Credits)', 8.00, 88.00, 'A+', 1, '2024-05-25 02:40:23'),
-(46, '223568', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 7.00, 77.00, 'A', 1, '2024-05-25 02:40:23'),
-(47, '223568', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 7.00, 77.00, 'A', 1, '2024-05-25 02:40:23'),
-(48, '223568', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 6.00, 66.00, 'B+', 1, '2024-05-25 02:40:23'),
-(49, '5', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 7.00, 77.00, 'A', 1, '2024-05-25 04:10:32'),
-(50, '5', 'CSCA 412 - Object Oriented Programming (3 Credits)', 8.00, 88.00, 'A+', 1, '2024-05-25 04:10:32'),
-(51, '5', 'CSCA 413 - Database Management Systems (3 Credits)', 8.00, 88.00, 'A+', 1, '2024-05-25 04:10:32'),
-(52, '5', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 9.00, 99.00, 'O', 1, '2024-05-25 04:10:32'),
-(53, '5', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 9.00, 99.00, 'A+', 1, '2024-05-25 04:10:32'),
-(54, '5', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 8.00, 88.00, 'A+', 1, '2024-05-25 04:10:32'),
-(55, '7', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 7.00, 77.00, 'A', 1, '2024-05-25 04:15:18'),
-(56, '7', 'CSCA 412 - Object Oriented Programming (3 Credits)', 8.00, 88.00, 'A+', 1, '2024-05-25 04:15:18'),
-(57, '7', 'CSCA 413 - Database Management Systems (3 Credits)', 8.00, 88.00, 'A', 1, '2024-05-25 04:15:18'),
-(58, '7', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 8.00, 88.00, 'A', 1, '2024-05-25 04:15:18'),
-(59, '7', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 8.00, 88.00, 'A+', 1, '2024-05-25 04:15:18'),
-(60, '7', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 7.00, 77.00, 'A', 1, '2024-05-25 04:15:18'),
-(61, '89798', 'CSCA 411 - Data Structures and Algorithms (3 Credits)', 8.00, 98.00, 'B', 1, '2024-05-25 08:52:47'),
-(62, '89798', 'CSCA 412 - Object Oriented Programming (3 Credits)', 9.00, 78.00, 'A', 1, '2024-05-25 08:52:47'),
-(63, '89798', 'CSCA 413 - Database Management Systems (3 Credits)', 6.00, 78.00, 'B+', 1, '2024-05-25 08:52:47'),
-(64, '89798', 'CSCA 414 - Data Structures and Algorithms Lab (2 Credits)', 7.00, 87.00, 'B', 1, '2024-05-25 08:52:47'),
-(65, '89798', 'CSCA 415 - Object Oriented Programming Lab (2 Credits)', 7.00, 78.00, 'B+', 1, '2024-05-25 08:52:47'),
-(66, '89798', 'CSCA 416 - Database Management Systems Lab (2 Credits)', 7.00, 89.00, 'A', 1, '2024-05-25 08:52:47');
+INSERT INTO `core_subjects` (`id`, `register_no`, `subject_name`, `subject_code`, `credits`, `points`, `marks`, `grade`, `semester`, `created_at`) VALUES
+(1, '0987654321', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '78.00', 'A', 1, '2024-05-24 23:24:49'),
+(2, '0987654321', 'Object Oriented Programming', 'CSCA 412', 3, '7.00', '78.00', 'B', 1, '2024-05-24 23:24:49'),
+(3, '0987654321', 'Database Management Systems', 'CSCA 413', 3, '7.00', '89.00', 'C', 1, '2024-05-24 23:24:49'),
+(4, '0987654321', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '8.00', '89.00', 'B', 1, '2024-05-24 23:24:49'),
+(5, '0987654321', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '78.00', 'B+', 1, '2024-05-24 23:24:49'),
+(6, '0987654321', 'Database Management Systems Lab', 'CSCA 416', 2, '8.00', '87.00', 'B+', 1, '2024-05-24 23:24:49'),
+(7, '0987', 'Data Structures and Algorithms', 'CSCA 411', 3, '9.00', '89.00', 'A', 1, '2024-05-24 23:30:58'),
+(8, '0987', 'Object Oriented Programming', 'CSCA 412', 3, '7.00', '89.00', 'B+', 1, '2024-05-24 23:30:58'),
+(9, '0987', 'Database Management Systems', 'CSCA 413', 3, '7.00', '89.00', 'B+', 1, '2024-05-24 23:30:58'),
+(10, '0987', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '7.00', '89.00', 'B+', 1, '2024-05-24 23:30:58'),
+(11, '0987', 'Object Oriented Programming Lab', 'CSCA 415', 2, '7.00', '89.00', 'B+', 1, '2024-05-24 23:30:58'),
+(12, '0987', 'Database Management Systems Lab', 'CSCA 416', 2, '7.00', '89.00', 'A', 1, '2024-05-24 23:30:58'),
+(13, '244', 'Data Structures and Algorithms', 'CSCA 411', 3, '9.00', '98.00', 'B+', 1, '2024-05-24 23:41:09'),
+(14, '244', 'Object Oriented Programming', 'CSCA 412', 3, '8.00', '89.00', 'A', 1, '2024-05-24 23:41:09'),
+(15, '244', 'Database Management Systems', 'CSCA 413', 3, '9.00', '89.00', 'B', 1, '2024-05-24 23:41:09'),
+(16, '244', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '8.00', '98.00', 'B', 1, '2024-05-24 23:41:09'),
+(17, '244', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '76.00', 'B+', 1, '2024-05-24 23:41:09'),
+(18, '244', 'Database Management Systems Lab', 'CSCA 416', 2, '7.00', '89.00', 'B+', 1, '2024-05-24 23:41:09'),
+(19, '24', 'Data Structures and Algorithms', 'CSCA 411', 3, '9.00', '98.00', 'B+', 1, '2024-05-24 23:46:47'),
+(20, '24', 'Object Oriented Programming', 'CSCA 412', 3, '9.00', '89.00', 'O', 1, '2024-05-24 23:46:47'),
+(21, '24', 'Database Management Systems', 'CSCA 413', 3, '9.00', '78.00', 'C', 1, '2024-05-24 23:46:47'),
+(22, '24', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '9.00', '87.00', 'B+', 1, '2024-05-24 23:46:47'),
+(23, '24', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '87.00', 'B+', 1, '2024-05-24 23:46:47'),
+(24, '24', 'Database Management Systems Lab', 'CSCA 416', 2, '7.00', '87.00', 'B', 1, '2024-05-24 23:46:47'),
+(25, '2876', 'Data Structures and Algorithms', 'CSCA 411', 3, '9.00', '98.00', 'A', 1, '2024-05-24 23:52:00'),
+(26, '2876', 'Object Oriented Programming', 'CSCA 412', 3, '9.00', '98.00', 'B', 1, '2024-05-24 23:52:00'),
+(27, '2876', 'Database Management Systems', 'CSCA 413', 3, '9.00', '98.00', 'C', 1, '2024-05-24 23:52:00'),
+(28, '2876', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '9.00', '98.00', 'B+', 1, '2024-05-24 23:52:00'),
+(29, '2876', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '87.00', 'B', 1, '2024-05-24 23:52:00'),
+(30, '2876', 'Database Management Systems Lab', 'CSCA 416', 2, '9.00', '89.00', 'B+', 1, '2024-05-24 23:52:00'),
+(31, '2223523', 'Data Structures and Algorithms', 'CSCA 411', 3, '9.00', '87.00', 'B+', 1, '2024-05-25 00:02:11'),
+(32, '2223523', 'Object Oriented Programming', 'CSCA 412', 3, '8.00', '89.00', 'B+', 1, '2024-05-25 00:02:11'),
+(33, '2223523', 'Database Management Systems', 'CSCA 413', 3, '9.00', '87.00', 'B+', 1, '2024-05-25 00:02:11'),
+(34, '2223523', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '9.00', '89.00', 'B+', 1, '2024-05-25 00:02:11'),
+(35, '2223523', 'Object Oriented Programming Lab', 'CSCA 415', 2, '8.00', '98.00', 'B+', 1, '2024-05-25 00:02:11'),
+(36, '2223523', 'Database Management Systems Lab', 'CSCA 416', 2, '9.00', '76.00', 'A', 1, '2024-05-25 00:02:11'),
+(55, '22352018', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:51:27'),
+(56, '22352018', 'Object Oriented Programming', 'CSCA 412', 3, '7.00', '77.00', 'A', 1, '2024-05-26 07:51:27'),
+(57, '22352018', 'Database Management Systems', 'CSCA 413', 3, '9.00', '94.00', 'A+', 1, '2024-05-26 07:51:27'),
+(58, '22352018', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:51:27'),
+(59, '22352018', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '97.00', 'O', 1, '2024-05-26 07:51:27'),
+(60, '22352018', 'Database Management Systems Lab', 'CSCA 416', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:51:27'),
+(61, '22352018', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:51:27'),
+(62, '22352018', 'Object Oriented Programming', 'CSCA 412', 3, '7.00', '77.00', 'A', 1, '2024-05-26 07:51:27'),
+(63, '22352018', 'Database Management Systems', 'CSCA 413', 3, '9.00', '94.00', 'A+', 1, '2024-05-26 07:51:27'),
+(64, '22352018', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:51:27'),
+(65, '22352018', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '97.00', 'O', 1, '2024-05-26 07:51:27'),
+(66, '22352018', 'Database Management Systems Lab', 'CSCA 416', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:51:27'),
+(67, '18', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:58:58'),
+(68, '18', 'Object Oriented Programming', 'CSCA 412', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:58:58'),
+(69, '18', 'Database Management Systems', 'CSCA 413', 3, '7.00', '77.00', 'A', 1, '2024-05-26 07:58:58'),
+(70, '18', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:58:58'),
+(71, '18', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '98.00', 'A+', 1, '2024-05-26 07:58:58'),
+(72, '18', 'Database Management Systems Lab', 'CSCA 416', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:58:58'),
+(73, '18', 'Data Structures and Algorithms', 'CSCA 411', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:58:58'),
+(74, '18', 'Object Oriented Programming', 'CSCA 412', 3, '8.00', '88.00', 'A+', 1, '2024-05-26 07:58:58'),
+(75, '18', 'Database Management Systems', 'CSCA 413', 3, '7.00', '77.00', 'A', 1, '2024-05-26 07:58:58'),
+(76, '18', 'Data Structures and Algorithms Lab', 'CSCA 414', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:58:58'),
+(77, '18', 'Object Oriented Programming Lab', 'CSCA 415', 2, '9.00', '98.00', 'A+', 1, '2024-05-26 07:58:58'),
+(78, '18', 'Database Management Systems Lab', 'CSCA 416', 2, '10.00', '100.00', 'O', 1, '2024-05-26 07:58:58');
 
 -- --------------------------------------------------------
 
@@ -169,10 +169,12 @@ INSERT INTO `students` (`register_no`, `name`, `date_of_birth`, `session`, `prog
 ('0987', 'udhayakumar', '2024-05-17', '2024', 'cs', 'mca'),
 ('0987654321', 'udhayakumar', '2024-05-17', '2024', 'cs', 'mca'),
 ('12345', 'Monika', '2024-03-15', '2024', 'cs', 'mca'),
+('18', 'Gd', '2002-04-22', '2024', 'cs', 'mca'),
 ('2223523', 'Monika', '2024-05-18', '2023', 'cs', 'mca'),
 ('222352303', 'Monika', '2024-05-18', '2023', 'cs', 'mca'),
 ('2223523038', 'Monika', '2024-05-18', '2023', 'cs', 'mca'),
 ('2235', 'mala', '2024-05-03', '2024', 'cs', 'mca'),
+('22352018', 'Dheepan G', '2002-04-22', '2024', 'cs', 'mca'),
 ('2235254', 'mala', '2024-05-03', '2024', 'cs', 'mca'),
 ('223566', 'mala', '2024-05-03', '2024', 'cs', 'mca'),
 ('223568', 'Monika', '2024-03-07', '2024', 'cs', 'gg'),
@@ -181,8 +183,6 @@ INSERT INTO `students` (`register_no`, `name`, `date_of_birth`, `session`, `prog
 ('2876', 'Monika', '2024-05-18', '2023', 'cs', 'mca'),
 ('38928', 'udhayakumar', '2024-05-17', '2024', 'cs', 'mca'),
 ('38928783', 'udhay', '2024-05-17', '2024', 'cs', 'mca'),
-('5', 'Gd', '2024-05-09', 'may', 'mca', 'mca'),
-('7', 'Gd', '2024-05-07', '2024', 'mca', 'mca'),
 ('75', 'archu', '2024-02-16', '2024', 'cs', 'mca'),
 ('765764', 'maya', '2024-05-12', '2024', 'cs', 'mca'),
 ('873983', 'hemachandran', '2024-05-09', '2024', 'cs', 'mca'),
@@ -207,8 +207,28 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`subject_code`, `subject_name`, `credits`, `type`) VALUES
+('CSCA411', 'Data Structures and Algorithms', 3, 'H'),
+('CSCA412', 'Object Oriented Programming', 3, 'H'),
+('CSCA413', 'Database Management Systems', 3, 'H'),
+('CSCA414', 'Data Structures and Algorithms Lab', 2, 'H'),
+('CSCA415', 'Object Oriented Programming Lab', 2, 'H'),
+('CSCA416', 'Database Management Systems Lab', 2, 'H'),
+('CSCA421', 'Computer Networks', 3, 'H'),
+('CSCA422', 'Operating Systems', 3, 'H'),
+('CSCA423', 'Communication Skills', 2, 'H'),
+('CSCA424', 'Computer Networks Lab', 2, 'H'),
+('CSCA425', 'Operating Systems Lab', 2, 'H'),
 ('CSCA431', 'Mathematics for Computer Science', 3, 'H'),
 ('CSCA432', 'Management Concepts and Strategies', 3, 'S'),
+('CSCA511', 'Software Engineering', 3, 'H'),
+('CSCA512', 'Internet and Web Technologies', 3, 'H'),
+('CSCA513', 'Mini Project', 2, 'H'),
+('CSCA514', 'Internet and Web Technologies Lab', 2, 'H'),
+('CSCA515', 'Academic Out-Reach Programme', 1, 'H'),
+('CSCA521', 'Project Work', 4, 'H'),
+('CSCA522', 'Project Seminar', 4, 'H'),
+('CSCA523', 'Project Report and Viva-voce', 4, 'H'),
+('CSCA524', 'Compulsory Subject Name', 3, 'H'),
 ('CSCA531', 'Soft Skills Training', 3, 'S'),
 ('CSCA532', 'Technical Writing', 3, 'S'),
 ('CSCA533', 'Presentation Skills', 3, 'S'),
@@ -268,23 +288,13 @@ ALTER TABLE `subjects`
 -- AUTO_INCREMENT for table `additional_subjects`
 --
 ALTER TABLE `additional_subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `core_subjects`
 --
 ALTER TABLE `core_subjects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `core_subjects`
---
-ALTER TABLE `core_subjects`
-  ADD CONSTRAINT `core_subjects_ibfk_1` FOREIGN KEY (`register_no`) REFERENCES `students` (`register_no`);
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
